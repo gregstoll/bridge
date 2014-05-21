@@ -1,0 +1,655 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <title>Bridge Primer</title>
+        <style type="text/css">
+            ol {font-family: Arial;}
+            .c67{color:#000099;font-size:11pt;text-decoration:underline;font-family:Arial}
+            p {line-height: 1.15; text-indent: 0pt; color: #000000; font-size: 11pt; font-family:Arial;}
+            h1,h2,h3 {font-family: Arial; }
+            /* http://www.alistapart.com/articles/holygrail */
+            body {
+                min-width: 300px;
+                /*overflow: hidden;*/
+            }
+            #container {
+                padding-left: 150px;
+                padding-right: 0px;
+            }
+            #container .column {
+                position: relative;
+                float: left;
+            }
+            #main {
+                width: 100%;
+                height: 100%;
+                /*overflow-y: scroll;*/
+            }
+            #sidebar {
+                width: 150px;
+                right: 150px;
+                margin-left: -100%;
+                /*position: absolute;*/
+                /*position: fixed;*/
+                /*overflow: hidden;*/
+            }
+            #unusedRightSidebar {
+                width: 0px;
+                margin-right: -0px;
+            }
+            #footer {
+                clear: both;
+            }
+            /*** IE6 Fix ***/
+            * html #sidebar {
+                left: 0px;
+            }
+            td {
+                padding-right: 30px;
+                vertical-align: top;
+            }
+            h4 {
+                font-weight: normal;
+                font-size: 110%;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                text-decoration: underline;
+            }
+            #sidebar > ul {
+                padding-left: 10px;
+            }
+            #sidebar > ul ul {
+                padding-left: 20px;
+            }
+        </style>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript">
+            function getTimeAgo(t) {
+                if (t <= 0) {
+                    return '0 seconds';
+                }
+                if (t < 60) {
+                    t = Math.round(t);
+                    return t + ' second' + (t == 1 ? '' : 's');
+                }
+                t /= 60;
+                if (t < 60) {
+                    t = Math.round(t);
+                    return t + ' minute' + (t == 1 ? '' : 's');
+                }
+                t /= 60;
+                if (t < 24) {
+                    t = Math.round(t);
+                    return t + ' hour' + (t == 1 ? '' : 's');
+                }
+                t /= 24;
+                if (t < 7) {
+                    t = Math.round(t);
+                    return t + ' day' + (t == 1 ? '' : 's');
+                }
+                t /= 7;
+                t = Math.round(t);
+                return t + ' week' + (t == 1 ? '' : 's');
+            }
+            $(document).ready(function() {
+                var dateUpdated = new Date(document.lastModified);
+                var monthName;
+                switch (dateUpdated.getMonth()) {
+                    case 0:
+                        monthName = 'January';
+                        break;
+                    case 1:
+                        monthName = 'February';
+                        break;
+                    case 2:
+                        monthName = 'March';
+                        break;
+                    case 3:
+                        monthName = 'April';
+                        break;
+                    case 4:
+                        monthName = 'May';
+                        break;
+                    case 5:
+                        monthName = 'June';
+                        break;
+                    case 6:
+                        monthName = 'July';
+                        break;
+                    case 7:
+                        monthName = 'August';
+                        break;
+                    case 8:
+                        monthName = 'September';
+                        break;
+                    case 9:
+                        monthName = 'October';
+                        break;
+                    case 10:
+                        monthName = 'November';
+                        break;
+                    case 11:
+                        monthName = 'December';
+                        break;
+                }
+                var t = Math.round(((new Date()).getTime() - dateUpdated.getTime()) / 1000);
+                var now = new Date();
+                $('#lastUpdated').html(monthName + ' ' + dateUpdated.getDate() + ', ' + dateUpdated.getFullYear() + ' (' + getTimeAgo(t) + ' ago)');
+                $('#printable').click(function() {
+                    $('#sidebar').css('display', 'none').css('width', '0px').css('margin-left', '0px').css('right', '0px');
+                    $('#main').css('width', 'auto').css('height', 'auto').css('padding-left', '0px').css('float', 'none');
+                    $('#container').css('padding-left', '0px');
+                });
+                $('#hideNonConventions').click(function() {
+                        //$('#main').hide();
+                        $('.nonConventions').hide();
+                        /*$('#main > h2').css('display', 'none');
+                        $("*[id*='container'] > p").css('display', 'block');
+                        $("*[id*='container'] > h2").css('display', 'block');*/
+                });
+            });
+        </script>
+</head>
+<body>
+    <div id="container">
+    <div id="main" class="column">
+        <p><i>Last updated: <span id="lastUpdated"></span></i> <a href="#" id="printable">Make printable</a> <a href="#" id="hideNonConventions">Only show conventions</a></p>
+    <div class="nonConventions">
+    <h2 id="basics">The Basics of Bridge:</h2>
+    <p>Bridge, like most card games, is played in two phases: bidding and card playing. Unlike most card games though, the bidding phase involves a lot more complexity and negotiation with your partner.  The card playing aspect is actually rather vanilla trick-taking, but for one distinction which adds an enormous amount of strategy to the game.</p>
+    <p>The bidding phase is very straight-forward.  After the dealer deals out the entire deck to the four players, he opens the bidding.  A bid consists of either passing (which does not prevent one from bidding in a future round of the same hand) or giving a number and either naming a trump suit or &ldquo;<b>no trump</b>&rdquo; (NT).  There is a ranking between the suits: clubs (<img src="club.gif" title="C" alt="C">) &lt; diamonds (<img src="diamond.gif" title="D" alt="D">) &lt; hearts (<img src="heart.gif" title="H" alt="H">) &lt; spades (<img src="spade.gif" title="S" alt="S">) &lt; no trump.  The lower two suits (clubs and diamonds) are called <b>minor</b> suits, and the top two (hearts and spades) are called <b>major</b> suits. Every player, if they wish to bid, must bid higher than the previous bid, either in the number or in the trump suit.  To give you an idea, 1 club (1<img src="club.gif" title="C" alt="C">) is the lowest possible bid, followed by 1<img src="diamond.gif" title="D" alt="D">, 1<img src="heart.gif" title="H" alt="H">, 1<img src="spade.gif" title="S" alt="S">, 1NT, 2<img src="club.gif" title="C" alt="C">, 2<img src="diamond.gif" title="D" alt="D">, etc.</p>
+   
+    <p>Wait, I haven't told you what your bid means!  The number, plus 6, represents how many tricks you and your teammate must get to earn points (at least, extra tricks do give bonuses however).  The 6 is omitted because bidding means that you have to get at least half of the 13 tricks and starting the bidding at 7 sounded ridiculous I guess.  The suit represents what suit will be trump (no trump means that there is no trump).  I hope all of this is sounding really obvious.</p>
+    <p>Bidding continues even as people pass and then later bid escalating every time until 3 consecutive passes occur.  Then the last bid is the winner!  That bid is called the <b>contract</b>.  The member of the bid winning team who first mentioned the contract suit is called the <b>declarer</b>, the other team member is called the <b>dummy </b>(yes, honestly).  For the fine details: If no one bids (i.e. all 4 players simply pass) then the hand is &lsquo;thrown in' and the cards are shuffled and redealt, with dealer, as always, passing to the left. Also there are two other bidding possibilities: an opponent of the team that last bid can say <b>&lsquo;double'</b>as their bid (this counts as a bid, not a pass) and any subsequent bid would overrule it.  However, a teammate of the team that had their last bid doubled may <b>&lsquo;redouble'</b> it.  These double and quadruple the points the hand is worth, respectively.  They are uncommon bids.</p>
+    <p>Now the card-playing phase occurs.  All of the standard, vanilla trick-taking rules apply.  The player to the left of the declarer will lead the first card of the first trick, then everyone must follow suit, if they can.  If they cannot follow suit, then they may play any card, including trump.  After everyone has, in order, played a card in a trick, then the winner of the trick is the highest trump or, if there was none played, the highest card in the suit led (even if it was the ONLY card in the suit led).  The winner of a trick starts or leads the next trick; there are no limitations on what card or suit can be led.</p>
+    <p>I did promise one exciting twist.  AFTER the very first card is led, the dummy lays their hand down face up on the table for all players to see and the declarer must tell the dummy what to play every time it is their turn to play.  This hand is still distinct from the declarer's hand and great care must be made to remember which hand wins tricks, as the lead must come from the winning hand!  This additional information allows the declarer and the opposing team to play with much more strategy and the playing phase is much more complex than in hearts or spades.</p>
+    <p><span>After the 13 tricks have been played and won, the contract is scored based on whether it succeeded or failed as well as bonuses are given.  The cards are shuffled and redealt by the player to the left of the last dealer.  Scoring will be discussed in the next section.</span></p>
+    <h2 id="scoring">The Scoring of Rubber Bridge:</h2>
+    <p>Scoring bridges varies from variant to variant.  We will be using rubber bridge.  Like in tennis, the word &ldquo;game&rdquo; unfortunately refers to something other than the entire competition.  Instead the competition is called a rubber.  To complicate matters further, the winner of the rubber is the team with the most points at the end, but the end is defined by when some team wins their second game.  So how do you win a game?  Easy, be the first to 100 points.  Each game is played to 100 points.  After a game is won, any points and bonuses (we'll discuss those in a minute) are set aside (but not lost) and another game is played to another 100 points.  This continues until one team wins 2 games (total, not consecutively).</p>
+    <p>Now, what you should have picked up by now is that not all points count towards winning games.  First, any points you have accumulated from previous games (whether you won or lost) do not count toward future games but instead are set aside until the very end of the game where they are included in the final total that determines the winner of the rubber.  Second, most points you earn are actually bonus points that never count toward any games, but only towards winning the rubber.  In fact, so you know the parlance, points that are counting towards the current game are scored &ldquo;<b>below the line</b>&rdquo; and usually this is literal (a line is often drawn to divide the pad in half).  All the other bonuses are scored &ldquo;<b>above the line</b>&rdquo;.</p>
+    <p>Actually, very few points score below the line.  Only points for tricks bid for and made are scored below the line.  (These are doubled and redoubled if the contract was doubled and redoubled, respectively).  For each minor suit bid and taken, 20 points are scored, 30 points for majors, and 30 points for no trump (except you score a 10 point bonus for making any tricks in no trump).  Recall that a game is played to 100 points.  That means that it takes a bid of 5 clubs or 5 hearts to make an entire game in one hand, but only 4 hearts or 4 spades to do so.  A 3NT contract that is made will exactly give you enough points in one hand to make a game.  Of course, one does not need to make game in only one hand, but it is a huge advantage as gaining enough points to bid is not a guarantee every hand.  This fact alone motivates the majority of bidding, trying to figure out if you can make a &ldquo;game contract&rdquo;.</p>
+    <p>As a side note, overtrick bonuses, undertrick penalties, rubber bonuses for being the first to make two games all are examples of above the line points.  I would recommend referring to the page <a href="http://en.wikipedia.org/wiki/Rubber_bridge#Scoring">http://en.wikipedia.org/wiki/Rubber_bridge</a> for the exact info on points.</p>
+    <h2 id="biddingintro">Intro to Bidding:</h2>
+    <p>How you feel about bidding in bridge probably determines how you feel about bridge as a whole.  Bidding in bridge is about learning a new language to communicate with your partner.  Beginners have an intensely hard time; they know no vocabulary, no grammar, and don't know what they should be communicating to their partner anyway.  We will attempt to cover each of these as we can.  The first two take some memorization and experience; the last takes tons of experience.  Now we'll cover some basic vocabulary and grammar, and we'll give you some rubrics to counter your lack of experience.  As you gain experience, feel free to use it to bend the rubrics more and more, but be careful.  Remember if you use &lsquo;poor grammar', it could confuse your partner and lead to problems; if you misuse your vocabulary you will definitely confuse your partner.</p>
+    <p>Ok, naively, one might just glance at one's hand, and if one feels it is strong enough, bid one's longest suit.  Then your partner could decide if he likes it, else he could bid his longest suit.  But then you have to decide which suit is better...or maybe a third suit is better.  How do you decide?  You bid again your suit if you really like it and then your teammate could decide he really dislikes that suit and tries a third suit.  You might agree to compromise on that third suit, and suddenly you find yourself in a 4 hearts contract.  That sounds perfect!  Oh wait, except you really have little idea how many of the hearts you and your teammate have and you only have a vague idea of your and his strength.  That sounds like an adequate amount of communication except that it's not.  A 4<img src="heart.gif" title="H" alt="H"> contract requires that out of 13 tricks you lose no more than 3 of them.  10 tricks is a lot tricks.  If you don't believe me, try this technique a few times.</p>
+    <p>That leads to a perfect first question: How do I know if we have enough hearts for &ldquo;game&rdquo; (remember that's 4 for the major suits)?  The usual rule of thumb is 8 between you and your teammate.  You want at least 8 of your trump suit.  No trump is an entirely separate discussion for another day.</p>
+    <p>And that other question: How do I know if we have strong enough hands to get 10 tricks? The rule of thumb is that it takes 26 points between the two of you.  &lsquo;Points?' you may ask. Well, a standard way to evaluate a bridge hand is to assign a certain number of points to each honor rank and then count up how many you have.  Let every ace be worth 4 points, king worth 3 points, queen worth 2 points, and jacks worth 1 point.  Now sum up these points.  These are called high card points.  For note, the points are entirely distinct from scoring! There are 40 high card points total, so on average your team will have around 20.  On average, you will be short of what you need to &ldquo;make game&rdquo;.  In addition to high card points, in most circumstances you can give your hand some additional &ldquo;distribution points&rdquo;.  You can either count &ldquo;void points&rdquo; or &ldquo;length points&rdquo; (but never both!).  Length points let you count every card beyond your fourth card in each suit.  Void points let you give yourself one point for every doubleton (a suit with exactly 2 two cards), two points for every singleton (a suit with one card), and three points for every void (a suit with no cards).</p>
+    <p>Ok, now that you know your team needs at least 8 of a suit to call trump and at least 26 points between the two of you, you know what, approximately needs to be communicated.  You need to communicate the length of your longest suits and your points.  Your teammate needs to coordinate that with his suits and his points and decide whether you have enough for game.</p>
+    <p>Before we get into some good rubrics, let me mention one point that beginners often miss.  It is rare that you care that your opponents overhear what you say to your teammate.</p>
+    <p>Ok, so it's your turn to bid and your partner has not bid anything yet.  Should you bid?  If you have at least 13 points, it's probably a good idea.  If you have at least 5 cards in hearts or spades, bid those.  Else, bid your longest minor suit.</p>
+    <p>What if it's your turn to bid and your partner did bid.  If you have 0-5 points, just pass.  Trust me.  If you have 6-12 points, then you and your partner have at least 19 points...but who knows how many.  Either raise their suit if you have at least 3 of a major or 5 of a minor (the difference is because if they opened with a major, they have at least 5 and 5 +3 is 8, but if they opened with a minor, it just means they didn't have 5 of a major...so they opened their longest minor which is only guaranteed to be at least 3 long) up one level OR bid one of your 4 card suits at the 1 level (i.e. if they bid 1<img src="diamond.gif" title="D" alt="D">, you could bid 1<img src="heart.gif" title="H" alt="H"> or 1<img src="spade.gif" title="S" alt="S">, but not 1<img src="diamond.gif" title="D" alt="D"> or 1<img src="club.gif" title="C" alt="C">) OR if none of these apply, 1NT.  Lastly, what if you have 13 points or more?  Do what I said above, but add 1 to the rank.  Why so aggressive?  Well, if you have 13 points and your partner opened so they have at least 13 points, then you at have least 26 points, a potential for game!  Finding an 8-card long suit is the goal now.</p>
+    <p>That should be enough to get you started!  We'll refine this another day.</p>
+    <h2 id="playingintro">Intro to Playing:</h2>
+    <p>Playing in bridge seems pretty straight forward.  The rules are simplistic, but the sky is the limit for the strategies you can employ.  Bridge columns in papers are actually largely devoted to this, not the more mystifying bidding.</p>
+    <h3 id="playinggeneral">A General Rule:</h3>
+    <p>There's a rule of thumb that works when you don't know what to play AFTER someone has lead (especially when you don't have the top card in the suit).  The second player in a trick should play a low card and the third player in a trick should play a high card.  The fourth player has it easy typically, play low if your partner won it or you cannot win it; win it if you can.  Why does this work generally?  Well, the fourth player is going to take it if he can, so if the third player plays low rather than trying to take the trick, then the fourth player will get to take the trick with a lower card probably than they would have had to play.  You never want to let your opponents win a trick with a 7; make him play his King, even if it costs you your Jack.  Now if the third player is going to play high, why should the second player waste a high card that isn't going to win the trick?  Hence the rule.</p>
+    <h3 id="playingdefending">Defending:</h3>
+    <h4>Leading:</h4>
+    <p>Let us start with the simpler question of leading.  Typically, you don't want to lead trump.  Now the other guidelines differ depending on whether the contract is in no trump or a suit.</p>
+    <p>In no trump, you typically want to lead your longest suit in hopes of getting to run with that suit.  If you have 3 or more touching honors (AKQJ10), then lead the top of those.  Else, you probably want to lead the 4th highest card from your longest suit.  This might sound odd, but it gives a lot of information to your partner.  It lets them know your longest suit and how strong it is (they can count the number of cards higher than your lead knowing you have three and how many they and the dummy have and this tells them the strength of declarer in that suit).  You may want to change this plan if one of the bidders expressed real strength in your longest suit.</p>
+    <p>In a suit contract, you often want to lead your shortest suit (typically the top of that).  In general, lead the top of any touching honors when you do, or the bottom of non-touching honors (like K J).</p>
+    <p>If you lead tricks other than the initial one, you usually want to return the suits that your partner lead.  They probably led them for a reason and it makes sense to continue in that vein.</p>
+    <h3 id="playingmakingcontract">Making your contract:</h3>
+    <p>The first thing the declarer should do once the dummy lays down his hand is count his winners!  These are cards guaranteed to win (aces, kings when you have the ace, kings when you have the queen, etc.) tricks for you (although in a suit contract you must always be wary that your opponents will trump a sure trick).  If this number is too low, then you will have to find a way to make more winners (never trust in too much luck).</p>
+    <p>The second thing you should always do is count your losers.  Losers are all the tricks you'd have to lose if your opponents grabbed the lead from you at some point in time and played perfectly to your weaknesses.  If this number is too large, then you will have to find a way to get rid of losers (or somehow never lose the lead, which is typically not an option).</p>
+    <p>How do you gain more winners?</p>
+    <ol>
+        <li>Develop your long suit (in a suited contract, you should pull trump)</li>
+        <li>Promote honors</li>
+        <li>Ruffing</li>
+    </ol>
+    <p>As you do this, there are two extremely important points that must always be kept in mind.  They are so important I'm bolding them both:<br><b>If you are going to be giving up the lead at some point in time and your losers are not going to set your contract, then take your losses early.</b><br><b>Always keep an eye on your entries into both your hand and the dummy.</b><br>Entries are high cards that will allow you to catch a trick in that hand.  For example, if the last two hearts in the hand are in your dummy's hand but you have no way to catch a trick in the dummy's hand but you have no way to catch a trick in the dummy's hand so that you can lead them, then they are useless!</p>
+    <p>1. Developing your long suit.  This will require pulling trump in a suited contract (unless trump is the suit that is your longest).  Look at you rlongest suit in a single hand (either in the dummy or the declarer).  That is the most number of tricks you can get out of this suit.  Take into account how many winners you already have in this suit.  Winners help you establish the suit faster and more safely but of course take away from the potential gains.  Typically, you want to use this method first if you are going to use it at all.  Start by leading the high cards you have in the suit you wish to develop and then every time you get control, lead more of this suit.</p>
+    <p>2. Promoting honors.  The goal here is to win tricks with honors that are not the top of their suit, e.g. a king when you don't have the ace.  There are two types of promotions: trivial and finesses.  Trivial promotions are when you have enough card sto "eventually win".  For example, if you have the king and queen of spades but not the ace, then you can easily lead the king.  It will either take the trick or lose to the ace, in which your queen is now high and can take a trick.  The general rule of thumb is to lead the top of touching honors (K Q) but the bottom of non-touching honors (K J).</p>
+    <p>A <b>finesse</b> is when you take an isolated high card, like a lone king and attempt to win a trick with it.  This is a gamble but it can pay off in two ways.  First, it may succeed and you get an extra trick.  Second, if it fails, you give up the lead, but your opponents might promote an honor for you (if they lead an ace in a suit where you have a king and low card you can play on the ace's trick).  A finesse is a 50% gamble.  First, get control in the hand opposite your lone high card.  Then play a low card of the same suit as your isolated high card.  If the highest card of the suit falls, don't play your lone card, else, gamble and play it.  It may be that the highest card is held by the player to your left, in which case they either play it (and you don't play your high card) or they don't play it and your high card will win the trick.  You lose the gamble if the highest card is held by the player who plays 4th in the trick, because then they can play higher than your high card.</p>
+    <p>3. Ruffing.  <b>Ruffing</b> is the word bridge players use for trumping a trick.  If you or your dummy have small or void suits, then the other hand can lead that suit and you can trump it.  You should prefer using dummy's probably low trump cards this way, especially since there are likely fewer of them.  If you have any really short suits in your hand or the dummy's (again, you should prefer the dummy's), lead them (provided it's OK for you to give up the lead) to establish a void.</p>
+    <p>How do you get rid of losers?<br>You discard them!  Imagine you have the following situation with hearts being trump:</p>
+    <div style="margin-left: 40px;">
+        Dummy:<br>A K Spades<br>3 2 Diamonds<br><br><br>You:<br>A K Hearts<br>4 Diamonds<br>3 Spades
+    </div>
+    <p>Notice that if a diamond is led, you both have to play a low one.  However, if you discard the 4 of diamonds at your first opportunity, then you can trump a diamond suit if it is led AND if you are playing cards, you are never forced to lead your low diamond.  You should attempt to discard losers, if necessary, before you give up the lead.  However, always be wary of using too many "winners" before you give up the lead, else you will have no way to get back in the lead to play all your great winners.</p>
+    <h2 id="basicconventions">Basic Conventions:</h2>
+    <p>Bidding is, as discussed earlier about communication and negotiation with your partner.  As such, there are vocabulary words called conventions.  Not only must you know what the words mean but also when to use them.  You also should know what nuances they carry and when and how you can bend them.  As a general rule, you can usually "bend the truth" when it comes to points, but your partner might punch you if you lie about distribution (the number of cards of each suit).  Remember, at first it may seem like there's little freedom in bidding, that it's a perfect state machine, but that's incredibly not true.  You will come to see the nuances and more importantly the choices involved as you gain experience.  As a beginner, there are two important things to take note of as you follow these rules of thumb: 1) Try to understand what is being said with each bid (points, distribution, etc.), and 2) When am I forced to respond to my partner?  Note: balanced refers to the distribution of suits where you have no void suits, no singleton suits, and at most one doubleton suit.  Remember your goal for "game" is, together with your partner,  a golden fit of 8 or more cards in a major suit and 26 points.</p>
+    </div>
+    <div id="allConventions">
+    <h3 id="conventions-opening">Opening:</h3>
+    <h4>Standard Openings:</h4>
+    <table>
+        <tr><td>0-12 pts</td><td>Pass</td></tr>
+        <tr><td>13-20 pts</td><td>Bid 1 of a suit (a major suit if you have 5+, else longest minor - if tie of 4, bid <img src="diamond.gif" title="D" alt="C">, if tie of 3, bid <img src="club.gif" title="C" alt="C">) Bid higher of two 5 card suits.</td></tr>
+        <tr><td>15-17 pts and balanced</td><td>Bid 1NT</td></tr>
+        <tr><td>21+ pts</td><td>Bid 2<img src="club.gif" title="C" alt="C"></td></tr>
+    </table>
+
+    <h4>"Weak 2's"</h4>
+    <table>
+        <tr><td>6-11 high card pts and 6+ of non-club suit</td><td>Bid 2 of that suit</td></tr>
+    </table>
+
+    <h4>No trump openings</h4>
+    <table>
+        <tr><td>15-17 pts and balanced</td><td>Bid 1NT</td></tr>
+        <tr><td>20-22 pts and balanced</td><td>Bid 2NT</td></tr>
+        <tr><td>25-27 pts and balanced</td><td>Bid 3NT</td></tr>
+    </table>
+
+    <h4>Preempts (be wary when vulnerable)</h4>
+    <p>Use the rough guideline below or this: Count number of probable tricks (e.g. 7). Subtract 4 and bid that if vulnerable (e.g. 7-4=3), else exaggerate a bit.</p>
+    <table>
+        <tr><td>6-11 high card pts and 6 of non-club suit</td><td>Bid 2 of that suit</td></tr>
+        <tr><td>6-11 high card pts and 7 of a suit</td><td>Bid 3 of that suit</td></tr>
+        <tr><td>6-11 high card pts and 8 of a suit</td><td>Bid 4 of that suit</td></tr>
+    </table>
+
+    <h4>Overcalls (be wary when vulnerable)</h4>
+    <table>
+        <tr><td>13+ pts, 5+ card suit</td><td>Bid at 1 or 2 level your suit</td></tr>
+        <tr><td>10-12 pts, 5+ card suit w/ 3 honors</td><td>Bid 1 of your suit</td></tr>
+        <tr><td>15-17 pts and balanced</td><td>Bid 1NT if stoppers in all bid suits and/or pass</td></tr>
+    </table>
+
+    <h3 id="conventions-respondingopening">Responding to Opening:</h3>
+    <h4>To 1 of a suit:</h4>
+    <table>
+        <tr><td>0-5 pts</td><td>Pass</td></tr>
+        <tr><td>6-9 pts</td><td>Raise major suit if golden fit,<br>
+				else bid 1 of a 4+ major suit<br>
+				else raise a minor with 5 card support<br>
+				else bid 1 of a 4+ minor suit or 1NT<br>
+				</td></tr>
+        <tr><td>10+ pts</td><td>Regardless of support, bid a new 4+ suit (no 4 card major at 2 level)<br>
+                                2 level bid means you agree to bid at least once more<br>
+                                If necessary, you can lie about a minor suit.</td></tr>
+        <tr><td>11-12pts after pass</td><td>Same as 10+ but preferrably no 4 card at 2 level<br>
+					    Use Jump Raise or Jump Shift to 5 card suit<br>
+				</td></tr>
+    </table>
+    <h5>1 Suit Conventions</h5>
+    <table>
+	<tr><td>Jump Raise (1 -> 3)</td><td>13-16 pts, 4+ trump support and if minor, no 4+ major<br>
+					    Raise your partner to 3 of their suit</td></tr>
+	<tr><td>Jump Shift</td><td>17-19 pts and either support for partner's suit or you have 8+ suit<br>
+					Bid your strongest new suit skipping one level</td></tr>
+	<tr><td>2 NT</td><td>13-15 high card pts, balanced, stoppers in unbid suits, no 4+ majors biddable at 1 
+level<br>
+			Bid 2 NT</td></tr>
+	<tr><td>3 NT</td><td>16-18 high card pts, balanced, stoppers in unbid suits, no 4+ majors biddable at 1 
+level</br>
+			Bid 3 NT</td></tr>
+	<tr><td>Weak Jump Raise (1 -> 4)</td><td>4-6 high card pts, 5+ trump support, xx21 distribution or worse<br> 
+					Raise to 4 of partner's suit</td></tr>
+	<tr><td>Weak Jump Shift</td><td>4-6 high card pts mostly in one 7+ suit<br>
+					Bid strong suit skipping 2 or 3 levels depending on suit length</td></tr>
+    </table>	
+
+    <h4>To 1NT:</h4>
+    <table>
+        <tr><td>0-7 pts</td><td>Pass or signoff with 2 of nonclub suit</td></tr>
+        <tr><td>8-9 pts</td><td>Bid 2NT (invitational) or use Stayman (2<img src="club.gif" title="C" alt="C">)</td></tr>
+        <tr><td>10-15 pts</td><td>Bid 3 of major 5+ card suit, 4 major 6+ card suit, else 3NT</td></tr>
+        <tr><td>16+ pts</td><td>...explore slam...</td></tr>
+    </table>
+
+    <h4>To weak 2:</h4>
+    <table>
+        <tr><td>0-12 pts</td><td>Pass</td></tr>
+        <tr><td>13-15 pts</td><td>Pass or bid game invitational based on suit support</td></tr>
+        <tr><td>16+ pts</td><td>Bid game based on suit support</td></tr>
+    </table>
+
+    <h4>To preempts:</h4>
+    <table>
+        <tr><td>0-15 pts</td><td>Pass</td></tr>
+        <tr><td>16+ pts</td><td>Bid game based on suit support</td></tr>
+    </table>
+
+    <h4>To strong 2 (2<img src="club.gif" alt="C" title="C">)</h4>
+    <table>
+        <tr><td>0-4 pts</td><td>Bid <b>artificial</b> 2<img src="diamond.gif" alt="D" title="D"></td></tr>
+        <tr><td>5+ pts</td><td>Want to be in game, find fit fast.</td></tr>
+    </table>
+
+    <h3 id="conventions-openerrebids">Rebids by Opener of Interest:</h3>
+    <p>First, new suits by partner are typically forcing (you must bid). No trump is only forcing if it is a jump.</p>
+
+    <h4>Responding to new suit at 1 level after 1 suit opening (prefer majors):</h4>
+    <table>
+	<tr><td>13+ pts, new 4+ suit at 1 level (NONFORCING)</td><td>Bid new suit at 1</td></tr>
+	<tr><td>13+ pts, new 4+ suit (if at 2 level, new suit MUST be lower rank than opening suit) (NONFORCING)</td><td>Bid new suit</td></tr>
+        <tr><td>13-16 pts, 4+ (or 3 awesome) support</td><td>Raise to 2</td></tr>
+	<tr><td>13-16 pts, balanced (no stopper check)</td><td>Bid 1 NT</td></tr>
+	<tr><td>13-16 pts, original suit is 6+ length</td><td>Rebid original suit</td></tr>
+        <tr><td>17-19 pts, 4+ support</td><td>Jump raise</td></tr>
+	<tr><td>17-19 pts, original suit is 6+ length</td><td>Jump rebid</td></tr>
+	<tr><td>17-19 pts, new 4+ card suit at 1 level</td><td>Bid the suit</td></tr>
+	<tr><td>17+ pts, Reverse bid, forcing, new 4+ card suit at 2 level higher than original, MUST be shorter than first suit</td><td>Bid suit</td></tr>
+	<tr><td>19+ pts, balanced, stoppers in unbid suits</td><td>Bid 2 NT</td></tr>
+        <tr><td>20+ pts, 4+ support</td><td>Raise to game</td></tr>
+	<tr><td>20+ pts, original suit is 7+ or solid 6+</td><td>Rebid at game</td></tr>
+	<tr><td>20+ pts, Jump Shift, FORCING to game, used for that purpose, mention a 4+ suit with stopper (or 3+ if necessary)</td><td>Jump shift to new suit</td></tr>
+    </table>
+
+   <h4>Responding to 1 NT after 1 suit opening:</h4>
+   <p>If none of the following applies, see the above section</p>
+   <p>N.B. Responder has no 4+ suits above your opening bid which is why they had to resort to 1NT</p>
+   <table>
+	<tr><td>13-16 pts, balanced</td><td>Pass</td></tr>
+	<tr><td>17-19 pts, balanced or semi-balanced</td><td>Bid 2NT</td></tr>
+	<tr><td>20-22 pts, balanced or semi-balanced</td><td>Bid 3NT</td></tr>
+   </table>
+
+   <h4>Responding to new 2 suit after 1 suit opening: (All responses here are forcing)</h4>
+   <table>
+	<tr><td>13+ pts, 3+ support (better be good support for minors)</td><td>Raise partner's suit</td></tr>
+	<tr><td>13+ pts, rebid a 6+ suit (5 if in a jam)</td><td>Rebid your opening suit</td></tr>
+	<tr><td>13-15 pts, balanced, stoppers in unbid suits</td><td>Bid 2 NT</td></tr>
+	<tr><td>15+ pts (13-14 if in jam) Reverse Bid, see above</td><td>Bid a higher suit than your opening</td></tr>	
+	<tr><td>15+ pts, Bid new 4+ suit lower rank then opening suit</td><td>Bid new suit</td></tr>
+	<tr><td>16-19 pts, (semi) balanced, stoppers in unbid suits</td><td>Bid 3 NT</td></tr>
+   </table>
+   
+   <h4>Responding to a raise to the 2 level of your 1 suit opening:</h4>
+   <p>Means they have 6-10 points, new suits by you are FORCING</p>
+   <table>
+	<tr><td>13-16 pts</td><td>Pass</td></tr>
+	<tr><td>17-19 pts, invite to game by:</td><td></td></tr>
+	<tr><td> With good trumps</td><td>Raise your suit</td></tr>
+	<tr><td> (semi)balanced and stoppers</td><td>Bid 2 NT</td></tr>
+	<tr><td> Talk about your best new suit first</td><td>Bid a new suit</td></tr>
+	<tr><td>20-22 pts, raise to game in major</td><td>Bid game</td></tr>
+	<tr><td>20-22 pts, (semi)balanced, stoppers in all other suits</td><td>Bid 3 NT</td></tr>
+	<tr><td>20-22 pts, minor suit may lead to 3 NT so mention next suit with stopper</td><td>Bid new suit</td></tr>
+   </table>
+
+    <h4>Responding to jump raise after 1 suit opening:</h4>
+    <table>
+        <tr><td>13-17 pts, and major suit</td><td>Bid game</td></tr>
+	<tr><td>13-17 pts, and minor, mention other stoppers suits to explore no trump</td><td>Bid new suit</td></tr>
+        <tr><td>18+ pts, explore slam</td><td></td></tr>
+    </table>
+
+    <h4>Responding to jump shift after 1 suit opening:</h4>
+	<p>You're headed to slam unless you have minimal points, so just bid your next strongest suit.</p>
+  
+    <h4>Responding to 2 NT bid after 1 suit opening:</h4>
+    <table>
+        <tr><td>13-18 pts, opened spades, have 4+ hearts</td><td>Bid 3 hearts</td></tr>
+        <tr><td>13-18 pts, opened major and not above</td><td>Bid 3 NT</td></tr>
+        <tr><td>13-14 pts, opened minor</td><td>Bid 3 NT</td></tr>
+        <tr><td>15-18 pts, opened minor, very unbalanced, 5+ minor suit</td><td>Bid 3 of opening suit</td></tr>
+        <tr><td>15-18 pts, else</td><td>Bid 3 NT</td></tr>
+        <tr><td>19+ pts, explore slam</td><td></td></tr>
+    </table>
+
+   <h4>Responding to 3 NT bid after 1 suit opening:</h4>
+	<p>13-15 pts pass, else, explore slam.</p>
+
+   <h4>Responding to a weak jump raise (4 of any suit, 5 of a minor) after 1 suit opening:</h4>
+	<p>Pass or explore slam with a really strong hand or suit</p>
+
+   <h4>Responding to a weak jump shift (3 or 4 or 5 of a different suit) after 1 suit opening:</h4>
+	<p>This means they have a very weak hand but 7+ suit. Pass or raise or explore slam. Respond as if they opened with that weak bid.</p>
+
+   <h4>Responding to 2 NT after 1 NT opening</h4>
+   <p>This is invitational 8-9 pts and implies no strong major. With 17 pts or a strong 16 pts, raise to game, else pass.</p>
+
+    <h3 id="conventions-responderrebids">Rebids by Responder of Interest:</h3>
+
+    <h4>Responding to: 1 of opening suit, 1 of new suit or 1NT, 1 of new suit or 2 of a nonreversing new suit</h4> 
+   <p>Opener's original bid stated 13+ points and any number in 
+his opening suit. His rebid states only 4+ in his new suit. It is a weak 
+bid probably denying 4+ support for your suit and limiting his first 
+opening to 5 or shorter. He is also probably not balanced. Note if opener bid major then minor, then they probably have 1-3 in each of the other suits.</p>
+    <table>
+        <tr><td>7-10 pts, have 4+ of opener's major suit</td><td>Raise it to 2 level</td></tr>
+        <tr><td>6 pts, have 3+ of opener's second suit</td><td>Pass</td></tr>
+        <tr><td>6-10 pts, have 4+ spades and that's unbid</td><td>Bid 1 Spades</td></tr>
+        <tr><td>7-10 pts, balanced (6 pts ok in a jam)</td><td>Bid 1NT</td></tr>
+        <tr><td>6-10 pts preferrably 8+ pts, have 4+ of opener's minor suit (or 3 good)</td><td>Raise it to 2 level</td></tr>
+        <tr><td>6-10 pts, have 6+ of your suit (or good 5)</td><td>Rebid at 2 level</td></tr>
+        <tr><td>6-10 pts, have 5+ of new suit</td><td>Bid at 2 level</td></tr>
+        <tr><td>7-10 pts, have 3 of opener's second suit</td><td>Pass</td></tr>
+        <tr><td>6-10 pts, in emergency, bid new 4+ new suit, must be non-reverse if &lt; 11 pts</td><td>Bid new suit at 2 level</td></tr>
+        <tr><td>6-10 pts, in emergency, pick best minor bid by partner</td><td>Raise partner's minor</td></tr>
+        <tr><td>11+ pts, follow any rule above about a new suit or jump bid</td><td>Bid a forcing bid</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 of a new suit or 1 NT, 2 of new, reversing (higher) suit</h4> 
+   <p>Opener has 17-20 pts and their first bid suit is 5+ length; their second suit is shorter, but at least 4 long. You MUST BID.</p>
+   <table>
+        <tr><td>6-8 pts, with stoppers and balanced (Nonforcing)</td><td>Bid 2NT</td></tr>
+        <tr><td>6-8 pts, with 3+ support raise his opening suit (Nonforcing)</td><td>Raise opening suit</td></tr>
+        <tr><td>6-8 pts, your suit bid (if any) is 6+ long (Nonforcing)</td><td>Rebid your suit</td></tr>
+        <tr><td>9+ pts, with 4+ support raise his second suit (Forcing)</td><td>Raise opener's second suit</td></tr>
+        <tr><td>9+ pts, bid new 4+ suit (Forcing)</td><td>Bid new suit</td></tr>
+        <tr><td>9+ pts, bid any of the 6-8 bids with a jump (Forcing)</td><td>Jump bid</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 of a new suit or 1 NT, 2 rebid</h4> 
+   <p>Opener shows 13-16 points and a 6+ or longer suit.</p>
+   <table>
+        <tr><td>6-10 pts, 0-1 support for opener's suit, have strong 6+ suit</td><td>Rebid your suit</td></tr>
+        <tr><td>6-10 pts, else</td><td>Pass</td></tr>
+        <tr><td>11-12 pts, with 2+ support to opener's suit</td><td>Raise his suit</td></tr>
+        <tr><td>11-12 pts, with stoppers in other suits</td><td>Bid 2NT</td></tr>
+        <tr><td>11-12 pts, rebid your strong 6+ suit</td><td>Rebid your suit</td></tr>
+        <tr><td>11-12 pts, have new 4+ suit (forcing)</td><td>Bid new suit</td></tr>
+        <tr><td>13+ pts, if you know where to bid game (NT or suit)</td><td>Bid game</td></tr>
+        <tr><td>13+ pts, else</td><td>Follow 11-12 pts, preferrably forcing</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 or 2 of a new suit, raise responder's suit</h4> 
+   <p>Opener has 13-16 points and 4+ support for your suit.</p>
+   <table>
+        <tr><td>6-10 pts, else</td><td>Pass</td></tr>
+        <tr><td>11-12 pts, have 5+ or string 4 in your suit</td><td>Raise again</td></tr>
+        <tr><td>11-12 pts, stoppers in unbid suits</td><td>Bid 2 NT</td></tr>
+        <tr><td>11-12 pts, have a new suit with a stopper in it (forcing)</td><td>Bid it</td></tr>
+        <tr><td>11-12 pts, have 4+ support for partner's major suit</td><td>Rebid their suit</td></tr>
+        <tr><td>13+ pts, same as top two cases of 11-12</td><td>Bid game</td></tr>
+        <tr><td>13+ pts, have a new suit with a stopper in it (forcing)</td><td>Bid it</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 of a new suit, 1 NT</h4> 
+   <p>Opener most likely has 13-14 points (else he would have opened 1 
+NT) and is balanced.</p>
+   <table>
+        <tr><td>6-11 pts, if you are ok with no trump</td><td>Pass</td></tr>
+        <tr><td>6-11 pts, your suit is 6+ long</td><td>Rebid your suit</td></tr>
+        <tr><td>6-11 pts, have 4+ support for his first suit</td><td>Raise his suit</td></tr>
+        <tr><td>6-11 pts, have a new 4+ non-reversing (lower) suit</td><td>Bid new suit</td></tr>
+        <tr><td>12 pts, balanced or semibalanced</td><td>Bid 2 NT</td></tr>
+        <tr><td>12 pts, a weak 12 point hand drops to 6-11 options</td><td></td></tr>
+        <tr><td>12 pts, a strong 12 point hand goes to 13+ options</td><td></td></tr>
+        <tr><td>13+ pts, balanced or semi-balanced</td><td>Bid 3 NT</td></tr>
+        <tr><td>13+ pts, your suit is 6+ long (forcing)</td><td>Jump raise your suit</td></tr>
+        <tr><td>13+ pts, have 4+ support for his first suit (forcing)</td><td>Jump raise his suit</td></tr>
+        <tr><td>13+ pts, bid a new 4+ reversing (higher) suit (forcing)</td><td>Bid new suit</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 or 2 of a new suit (no jump), Jump raise </h4> 
+   <p>Opener has 17-19 points, 4+ trump support</p>
+   <table>
+        <tr><td>6-7, weak 8 pts</td><td>Pass</td></tr>
+        <tr><td>strong 8, 9-10 pts</td><td>Raise to game if major, pass if minor</td></tr>
+        <tr><td>11+ pts</td><td>Raise to game</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 of a new suit or 1 NT, jump rebid</h4> 
+   <p>Opener has 17-19 pts and a 6+ suit he likes</p>
+   <table>
+        <tr><td>6-7 pts</td><td>Pass</td></tr>
+        <tr><td>8-10 pts, 2+ suit support</td><td>Raise</td></tr>
+        <tr><td>8+ pts, if balanced and stoppers in unbid suits</td><td>Bid 3 NT</td></tr>
+        <tr><td>11+ pts, 2+ suit support</td><td>Raise to game</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 NT, 2 NT</h4> 
+   <p>Opener has 17-19 pts and is (semi) balanced</p>
+   <table>
+        <tr><td>6-7 pts, (semi)balanced</td><td>Pass</td></tr>
+        <tr><td>6+ pts</td><td>Bid longest suit</td></tr>
+        <tr><td>8-10 pts, (semi)balanced</td><td>Bid 3NT</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 of a suit, 2 NT</h4> 
+   <p>Opener has 19-20 pts and is balanced and has stoppers in the unbid suits. Note any bid by you, responder, is forcing to game for both players.</p>
+   <table>
+        <tr><td>6 pts</td><td>Pass</td></tr>
+        <tr><td>7+ pts, (semi)balanced</td><td>Pass</td></tr>
+        <tr><td>7+ pts, very unbalanced</td><td>Bid longest (6+ preferrably) suit</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 1 or 2 of a suit (nonjump), jump shift</h4> 
+   <p>Opener has around 20 pts! You cannot pass below game!</p>
+   <table>
+        <tr><td>Support for any major suit bid by your partner</td><td>Bid game</td></tr>
+        <tr><td>With fourth suit stopper</td><td>Bid 3 NT</td></tr>
+        <tr><td>9+ pts and support for any minor suit bid by your partner</td><td>Bid game</td></tr>
+        <tr><td>Else, look back at the responses for 1, 1, 1 remembering the last suit bid by your partner is somewhat artificial</td><td>Bid appropriately</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, raise, raise</h4> 
+   <p>Opener has around 17-19 pts and a good suit.</p>
+   <table>
+        <tr><td>6-7, or weak 8 pts</td><td>Pass</td></tr>
+        <tr><td>8-10 pts</td><td>Raise</td></tr>
+        <tr><td>11+ pts</td><td>Bid game</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, raise, new suit</h4> 
+   <p>Opener has around 17-22 pts, not a great opening suit, 4+ in new suit. You cannot pass!</p>
+   <table>
+        <tr><td>6-7, or weak 8 pts</td><td>Raise initial suit</td></tr>
+        <tr><td>8+ pts, initial suit is major</td><td>Bid game</td></tr>
+        <tr><td>8+ pts, initial suit is minor, stoppers in all unbid suits</td><td>Bid 3 NT</td></tr>
+        <tr><td>8+ pts, else</td><td>Bid new stopper suit</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, raise, 2NT</h4> 
+   <p>Opener has around 17-21 pts, semi-balanced, stoppers in other suits</p>
+   <table>
+        <tr><td>6-7, or weak 8 pts</td><td>Pass</td></tr>
+        <tr><td>8+ pts, initial suit is major, 4+ support</td><td>Bid game in major</td></tr>
+        <tr><td>8+ pts, else</td><td>Bid 3NT</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 2 new suit, 2 rebid</h4> 
+   <p>Opener has 6+ suit, 13+ points.</p>
+   <table>
+        <tr><td>10-12 pts, 3+ (or good 2) support</td><td>Raise opener's suit</td></tr>
+        <tr><td>10-12 pts, stoppers in other suits</td><td>Bid next no trump bid</td></tr>
+        <tr><td>10+ pts, new 4+ suit to mention (forcing)</td><td>Bid new suit</td></tr>
+        <tr><td>10+ pts, your suit is 6+ long</td><td>Rebid your suit</td></tr>
+        <tr><td>13+ pts, 3+ (or good 2) support</td><td>Jump raise opener's suit</td></tr>
+        <tr><td>13+ pts, stoppers in other suits</td><td>Bid 3 NT</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 2 new suit, new non-reversed (lower) suit</h4> 
+   <p>Opener has 15+ points and 4+ suit.</p>
+   <table>
+        <tr><td>10-12 pts, 3+ support in either of his suits if major</td><td>Raise opener's suit</td></tr>
+        <tr><td>10-12 pts, stoppers in other suits</td><td>Bid next no trump bid</td></tr>
+        <tr><td>10+ pts, new 4+ suit to mention (forcing)</td><td>Bid new suit</td></tr>
+        <tr><td>10+ pts, your suit is 6+ long</td><td>Rebid your suit</td></tr>
+        <tr><td>13+ pts, 3+ support in either of his suits if major</td><td>Jump raise opener's suit</td></tr>
+        <tr><td>13+ pts, stoppers in other suits</td><td>3 NT</td></tr>
+        <tr><td>13-14 pts, 4+ support in either of his suits if minor</td><td>Raise opener's suit</td></tr>
+        <tr><td>15+ pts, 4+ support in either of his suits if minor</td><td>Jump raise opener's suit</td></tr>
+   </table>
+
+   <h4>Responding to: 1 of opening suit, 2 new suit, 2 NT</h4> 
+   <p>Opener has 13-14 points, balanced with stoppers in other suits. YOU MUST BID!</p>
+   <table>
+        <tr><td>10 - weak 12 pts, 3+ support of his suit (2+ ok if major)</td><td>Raise opener's suit</td></tr>
+        <tr><td>10+ pts, new 4+ (preferrably good) suit</td><td>Bid new suit</td></tr>
+        <tr><td>10+ pts, 6+ long suit</td><td>Rebid your suit</td></tr>
+        <tr><td>12+ pts, no major reservations with no trump</td><td>Bid 3 NT</td></tr>
+        <tr><td>12+ pts, 3+ (or good 2) support of major</td><td>Jump raise opening major</td></tr>
+        <tr><td>15+ pts, 4+ support of minor</td><td>Jump raise opening minor</td></tr>
+   </table>
+
+   <h4>Responding after you jumped in your first bid:</h4> 
+
+   <h4>Responding to: 1 of opening suit, jump raise, new suit</h4> 
+   <p>Opener has 13+ points and is now just mentioning other stopper 
+suits. If you have all other suits stoppered, jump to 3NT. Mention a new 
+stopper if you have one, else just rebid opening suit.</p>
+
+   <h4>Responding to: 1 of opening suit, jump shift, new suit</h4> 
+   <p>Opener has 13+ points and is just mentioning now his (second) 
+longest suit. You can keep describing hand or just jump to game.</p>
+
+   <h4>Responding to: 1 spades, 2 NT, 3 hearts</h4> 
+   <p>Opener has 13-18 points, 5+ spades and 4+ hearts. Bid best between hearts, spades and NT.</p>
+
+   <h4>Responding to: 1 minor, 2 NT, 3 raised</h4> 
+   <p>Opener has 15-18 points and 5+ minor suit, and he is very unbalanced. If you have 3+ minor, raise the minor to game, else bid 3NT.</p>
+
+    <h3 id="conventions-finishing the bid">Finishing the Bid:</h3>
+
+    <h3 id="conventions-standard">Standard Conventions:</h3>
+    <h4>Stayman:</h4>
+    <p>Purpose: Finding a major suit fit when partner is balanced<br>
+    Trigger: 1NT opening bid by your partner<br>
+    Action: Bid 2<img src="club.gif" alt="C" title="C"><br>
+    Response: Bid your 4 card major at the 2 level or 2<img 
+src="diamond.gif" alt="D" title="D"> if none</p>
+
+    <h4>Takeout Double:</h4>
+    <p>Purpose: Communicate suit strength when bid space is limited and competitive<br>
+    Trigger: Opponent just opened with a suit<br>
+    Action: Bid "Double"<br>
+    Meaning: 13+ pts and support for all other suits<br>
+    Response: No specific response required</p>
+
+    <h4>Jacoby:</h4>
+    <p>Purpose: After partner opens 1 NT, either signoff in a major suit or get partner to say your 5-card major suit first<br>
+    Trigger: 1 NT opening and you want to signoff in a major or have a 5 card major suit<br>
+    Action: Bid 2<img src="diamond.gif" alt="C" title="C"> for hearts or 2<img src="heart.gif" alt="C" title="C"><br>
+    Response: Bid the suit above the previous bid (hearts or spades)<br>
+    Followup Action: Responder may pass on a weak hand, raise the suit (to invitational or game based on points if a 6+ suit) or bid the other major to as a game-forcing way to indicate a 5-5 (or better) split, or bid 2NT or 3NT (based on points)</p>
+
+    <h4>Blackwood:</h4>
+    <p>Purpose: Exploring slam possibilities by asking about aces and then 
+kings, used by the opener typically<br>
+    Trigger: Game in suit or no trump known<br>
+    Action: Bid 4NT<br>
+    Response: Bid your number of aces (5<img src="club.gif" alt="C" 
+title="C"> 
+= 0 or 4, 5<img src="diamond.gif" alt="D" title="D"> = 1, etc.)<br>
+    Followup Action: You may bid 5NT to ask about kings<br>
+    Response: Bid your number of kings (5<img src="club.gif" alt="C" 
+title="C"> 
+= 0 or 4, 5<img src="diamond.gif" alt="D" title="D"> = 1, etc.)</p>
+    </div>
+
+    <p><i>For your amusement, Greg's <a href="/oldbridgepage/">old bridge page</a>.</i></p>
+</div>
+    <div id="sidebar" class="column">
+        <b>Sections:</b>
+        <ul>
+            <li><a href="#basics">The Basics of Bridge</a></li>
+            <li><a href="#scoring">The Scoring of Rubber Bridge</a></li>
+            <li><a href="#biddingintro">Intro to Bidding</a></li>
+            <li><a href="#playingintro">Intro to Playing</a>
+                <ul>
+                    <li><a href="#playinggeneral">A General Rule</a></li>
+                    <li><a href="#playingdefending">Defending</a></li>
+                    <li><a href="#playingmakingcontract">Making your contract</a></li>
+                </ul>
+            </li>
+            <li><a href="#basicconventions">Basic Conventions</a>
+                <ul>
+                    <li><a href="#conventions-opening">Opening</a></li>
+                    <li><a href="#conventions-respondingopening">Responding to Opening</a></li>
+                    <li><a href="#conventions-openerrebids">Rebids by Opener</a></li>
+                    <li><a href="#conventions-standard">Standard Conventions</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+<div id="rightUnusedSidebar" class="column"></div>
+</div>
+    </body>
+</html>
